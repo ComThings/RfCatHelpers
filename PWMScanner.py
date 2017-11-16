@@ -29,10 +29,11 @@ def ConfigureD(d):
 	d.setFreq(frequency)
 	d.makePktFLEN(keyLen)
 	d.setMdmDRate(baudRate)
+	d.setAmpMode(RF_RX_POWER_AMPLIFIER_ACTION_ON)
 	#d.setMdmChanBW(1);
 	#d.setMaxPower()
 	d.lowball()
-	
+
 	if(results.verbose == True):
 	  print "[+] Radio Config:"
 	  print " [-] ---------------------------------"
@@ -74,7 +75,7 @@ sys.stdout.write("Configuring RFCat...\n")
 d = RfCat()
 ConfigureD(d)
 allstrings = {}
-lens = dict() 
+lens = dict()
 lockOnSignal = True
 lockedFreq = False
 
@@ -182,12 +183,12 @@ while True:
 					currFreq = results.startFreq
 				n1=dt.datetime.now()
 				d.setFreq(currFreq)
-		
+
 	except KeyboardInterrupt:
 		break
 	except ChipconUsbTimeoutException:
 		pass
-	
+
 termios.tcsetattr(sys.stdin, termios.TCSADRAIN, old_settings)
 # hacky, but i wanna get rid of the line:
 print "\r" + (" " * 150)
@@ -222,7 +223,7 @@ if(results.replayKey == True and len(sortedKeys) > 0):
 			pass
 	allstrings = allstrings[sortedKeys[var-1]]
 	d.setFreq(sortedKeys[var-1])
-	
+
 	for a in allstrings:
 		currLen = len(a)
 		if currLen in lens.keys():
@@ -272,7 +273,7 @@ if(results.replayKey == True and len(sortedKeys) > 0):
 		print "[+] Key len:\n\t",keyLen,""
 		print "[+] Key:\n\t", key_packed.encode('hex')
 		print "[+] Freq:\n\t", str(sortedKeys[var-1])
-		
+
 		d.makePktFLEN(keyLen)
 
 		print "[+] Transmitting key: ",repeatNum," times"
@@ -287,7 +288,7 @@ if(results.replayKey == True and len(sortedKeys) > 0):
 
 		sys.stdout.write("\nDone.\n")
 		d.setModeIDLE()
-	 
-	
+
+
 else:
 	print "\n\nNo keys found :(\nbye."

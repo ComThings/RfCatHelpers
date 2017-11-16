@@ -26,8 +26,8 @@ def jamFreq(d,freq):
 def stopJam(d):
  d.setModeIDLE()
 
- 
- 
+
+
 parser = argparse.ArgumentParser(description='Application to use a RFCat compatible device to Jam a particular frequency',version="0.1-bricktop")
 parser.add_argument('-f', action="store", default="433880000", dest="baseFreq",help='Target frequency to listen for remote (default 433880000)',type=int)
 parser.add_argument('-r', action="store", dest="baudRate",default=4800,help='Baudrate, defaults to 4800',type=int)
@@ -44,6 +44,7 @@ d.setMdmDRate(results.baudRate)
 d.setMdmChanSpc(24000)
 d.setModeIDLE()
 d.setPower(results.power)
+d.setAmpMode(RF_TX_POWER_AMPLIFIER_ACTION_ON)
 
 
 

@@ -21,6 +21,7 @@ results = parser.parse_args()
 rawCapture = [];
 print "Configuring RfCat"
 d = RfCat()
+d.setModeIDLE()
 d.setMdmModulation(MOD_ASK_OOK)
 d.setFreq(results.baseFreq)
 d.setMdmSyncMode(0)
@@ -29,8 +30,10 @@ d.setMdmChanSpc(results.chanWidth)
 d.setChannel(0)
 d.setPower(results.power)
 d.setMaxPower()
+d.setAmpMode(RF_TX_POWER_AMPLIFIER_ACTION_ON)
+
 #d.setRFRegister(PA_TABLE0, 0xFF)
-#d.setRFRegister(PA_TABLE1, 0xFF) 
+#d.setRFRegister(PA_TABLE1, 0xFF)
 
 
 rawCapture = pickle.load(open(results.inFile,"rb"))
@@ -49,7 +52,7 @@ while True:
 		freq = raw_input("Press <enter> to resend or type the frequency you wish to send on now:")
 		if(freq != ''):
 			d.setFreq(int(freq))
-			
+
 		for i in range(0,len(rawCapture)):
 			key_packed = bitstring.BitArray(hex=rawCapture[i]).tobytes()
 			d.makePktFLEN(len(key_packed))
@@ -65,4 +68,4 @@ while True:
 print "exiting."
 d.setModeIDLE()
 #d.setRFRegister(PA_TABLE0, 0x00)
-#d.setRFRegister(PA_TABLE1, 0x00) 
+#d.setRFRegister(PA_TABLE1, 0x00)
